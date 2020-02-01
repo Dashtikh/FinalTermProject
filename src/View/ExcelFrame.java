@@ -275,7 +275,8 @@ public class ExcelFrame extends javax.swing.JFrame {
     }
 
     private void documentBTNActionPerformed(java.awt.event.ActionEvent evt) {
-
+        CreateExcel createExcel = new CreateExcel("DOCUMENTS","creator.bat");
+        createExcel.start();
     }
 
     private void unemployementBTNActionPerformed(java.awt.event.ActionEvent evt) {

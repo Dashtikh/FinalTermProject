@@ -1,5 +1,5 @@
 set markup html on 
-spool  C:\excells\CHANGES.xls
-select * from CHANGES;
+spool  C:\excells\COMPANY.xls
+select * from COMPANY;
 spool off
 exit

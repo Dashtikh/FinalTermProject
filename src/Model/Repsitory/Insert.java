@@ -1,5 +1,8 @@
 package Model.Repsitory;
 
+import Controller.Employee;
+import Model.Entity.Changes;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -12,6 +15,7 @@ public class Insert {
     private  static PreparedStatement pstmt = null;
     private  static Connection conn = Config.getConnect();
 
+
     private static String time() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
@@ -19,6 +23,12 @@ public class Insert {
     }
 
     public static void insertPrices(String year, int bread, int rice, int meat, int dairy, int vegetables, float cpi, float inf) throws SQLException {
+        Employee employee = Employee.getInstance();
+        String empId = employee.getEmpId();
+        String employeName=employee.getFname()+" "+employee.getLname();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String time = dtf.format(now);
         String sql = "insert into inflation (year, bread, rice, meat, dairy, vegetables, cpi, inf, created_date, updated_date, agent_name, agent_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         pstmt = conn.prepareStatement(sql);
@@ -33,13 +43,21 @@ public class Insert {
         pstmt.setFloat(8, inf);
         pstmt.setString(9, time());
         pstmt.setString(10, "unchanged");
-        pstmt.setString(11, "Amir Mohammad Bahrami");
-        pstmt.setString(12, "971113004");
+        pstmt.setString(11,employeName );
+        pstmt.setString(12, empId);
 
         pstmt.executeUpdate();
         pstmt.close();
+        Changes changes = new Changes(employeName,empId,"submit inflation",year,time);
+        SaveChangesInDB saveChangesInDB = new SaveChangesInDB(changes);
     }
     public static void insertDoc(String neme, String id, String date, String path) throws SQLException {
+        Employee employee = Employee.getInstance();
+        String empId = employee.getEmpId();
+        String employeName=employee.getFname()+" "+employee.getLname();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String time = dtf.format(now);
         String sql = "insert into DOCUMENTS (owner_name, owner_id, register_date, file_path, agent_name, agent_id) " +
                 "values (?, ?, ?, ?, ?, ?)";
 
@@ -49,11 +67,13 @@ public class Insert {
         pstmt.setString(2, id);
         pstmt.setString(3, date);
         pstmt.setString(4, path);
-        pstmt.setString(5, "Amir Mohammad Bahrami");
-        pstmt.setString(6, "971113004");
+        pstmt.setString(5, employeName);
+        pstmt.setString(6, empId);
 
         pstmt.executeUpdate();
         pstmt.close();
+        Changes changes = new Changes(employeName,empId,"submit document",neme,time);
+        SaveChangesInDB saveChangesInDB = new SaveChangesInDB(changes);
     }
 
 }

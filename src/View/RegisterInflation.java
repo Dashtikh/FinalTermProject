@@ -4,6 +4,7 @@ import Controller.AppControl;
 import Controller.EmptyFieldException;
 import Controller.InvalidPriceException;
 import Controller.LongPriceException;
+import Model.Entity.Changes;
 import Model.Repsitory.Prices;
 import Model.Repsitory.Select;
 
